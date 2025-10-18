@@ -1,0 +1,25 @@
+[
+  {
+    "id": "ICE_RAIDS",
+    "label": "ICE Raids",
+    "actions": [
+      { "label": "Donate to RAICES", "url": "https://raicestexas.org" },
+      { "label": "Join Court Watch NYC", "url": "https://courtwatchnyc.org" },
+      {
+        "label": "Volunteer with DSA Immigrant Justice",
+        "url": "https://socialists.nyc"
+      }
+    ]
+  },
+  {
+    "id": "CLIMATE",
+    "label": "Climate Crisis",
+    "actions": [
+      {
+        "label": "Join Sunrise Movement",
+        "url": "https://www.sunrisemovement.org"
+      },
+      { "label": "Volunteer with 350.org", "url": "https://350.org" }
+    ]
+  }
+]
