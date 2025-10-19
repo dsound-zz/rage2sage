@@ -58,6 +58,8 @@ export default function Home() {
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
             issue={selectedIssue}
+            zip={zip}
+            anonId={anonId}
           />
         )}
 
