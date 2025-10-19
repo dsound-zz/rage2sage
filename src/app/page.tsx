@@ -4,12 +4,18 @@ import { useState } from "react";
 import issues from "@/data/issue.json";
 import type { Issue } from "@/types";
 import IssueModal from "@/components/IssueModal";
+import HomeFeed from "@/components/HomeFeed";
 
 export default function Home() {
   const [zip, setZip] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
   const [anonId] = useState(() => crypto.randomUUID());
+
+  const openModal = (issue: Issue) => {
+    setSelectedIssue(issue);
+    setIsOpen(true);
+  };
 
   const typedIssues = issues as Issue[];
 
@@ -63,7 +69,7 @@ export default function Home() {
           />
         )}
 
-        {/* later: feed section + action modals */}
+        <HomeFeed anonId={anonId} onOpenModal={openModal} />
       </main>
       <footer className="text-xs text-center text-gray-400 mt-8">
         v{process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? "local"}
