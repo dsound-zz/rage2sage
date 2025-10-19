@@ -3,9 +3,12 @@
 import { useState } from "react";
 import issues from "@/data/issue.json";
 import type { Issue } from "@/types";
+import IssueModal from "@/components/IssueModal";
 
 export default function Home() {
   const [zip, setZip] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
   const [anonId] = useState(() => crypto.randomUUID());
 
   const typedIssues = issues as Issue[];
@@ -38,13 +41,25 @@ export default function Home() {
           {typedIssues.map((issue) => (
             <button
               key={issue.id}
-              onClick={() => trackClick("view_issue", issue.id)}
+              onClick={() => {
+                trackClick("view_issue", issue.id);
+                setSelectedIssue(issue);
+                setIsOpen(true);
+              }}
               className="border rounded-lg p-6 text-lg font-semibold hover:bg-gray-100 hover:cursor-pointer"
             >
               {issue.label}
             </button>
           ))}
         </section>
+
+        {isOpen && selectedIssue && (
+          <IssueModal
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            issue={selectedIssue}
+          />
+        )}
 
         {/* later: feed section + action modals */}
       </main>
