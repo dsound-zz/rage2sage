@@ -74,7 +74,9 @@ export async function GET() {
     ]);
 
     const [guardianImmigrationData, guardianClimateData] = await Promise.all(
-      guardianResponses.map((r) => r.json() as Promise<GuardianResponse>)
+      guardianResponses.map((r) => {
+        return r.json() as Promise<GuardianResponse>;
+      })
     );
 
     // Fetch RSS feeds
@@ -87,73 +89,100 @@ export async function GET() {
       parser.parseURL("https://grist.org/feed/"),
       parser.parseURL("https://insideclimatenews.org/feed/"),
     ]);
-
+    console.log(
+      "Guardian Response: ",
+      guardianResponses,
+      "Gaurdian Immigrations Data: ",
+      guardianImmigrationData,
+      "guardianClimateData:",
+      guardianClimateData,
+      "rss feeds",
+      rssFeeds
+    );
     // Combine Guardian API and RSS articles
     const items = [
       // Guardian API articles for ICE_RAIDS
       ...guardianImmigrationData.response.results.map(
-        (article: GuardianArticle) => ({
-          issue: "ICE_RAIDS",
-          title: article.webTitle,
-          link: article.webUrl,
-          image: article.fields?.thumbnail || null,
-          curated: false,
-          priority: 0,
-        })
+        (article: GuardianArticle) => {
+          return {
+            issue: "ICE_RAIDS",
+            title: article.webTitle,
+            link: article.webUrl,
+            image: article.fields?.thumbnail || null,
+            curated: false,
+            priority: 0,
+            source: "The Guardian",
+          };
+        }
       ),
 
       // RSS articles for ICE_RAIDS
-      ...rssFeeds[0].items.slice(0, 2).map((item) => ({
-        issue: "ICE_RAIDS",
-        title: item.title,
-        link: item.link,
-        image: extractImage(item),
-        curated: false,
-        priority: 0,
-      })),
-      ...rssFeeds[1].items.slice(0, 2).map((item) => ({
-        issue: "ICE_RAIDS",
-        title: item.title,
-        link: item.link,
-        image: extractImage(item),
-        curated: false,
-        priority: 0,
-      })),
+      ...rssFeeds[0].items.slice(0, 2).map((item) => {
+        return {
+          issue: "ICE_RAIDS",
+          title: item.title,
+          link: item.link,
+          image: extractImage(item),
+          curated: false,
+          priority: 0,
+          source: "Common Dreams",
+        };
+      }),
+      ...rssFeeds[1].items.slice(0, 2).map((item) => {
+        return {
+          issue: "ICE_RAIDS",
+          title: item.title,
+          link: item.link,
+          image: extractImage(item),
+          curated: false,
+          priority: 0,
+          source: "Democracy Now",
+        };
+      }),
 
       // Guardian API articles for CLIMATE
       ...guardianClimateData.response.results.map(
-        (article: GuardianArticle) => ({
-          issue: "CLIMATE",
-          title: article.webTitle,
-          link: article.webUrl,
-          image: article.fields?.thumbnail || null,
-          curated: false,
-          priority: 0,
-        })
+        (article: GuardianArticle) => {
+          return {
+            issue: "CLIMATE",
+            title: article.webTitle,
+            link: article.webUrl,
+            image: article.fields?.thumbnail || null,
+            curated: false,
+            priority: 0,
+            source: "The Guardian",
+          };
+        }
       ),
 
       // RSS articles for CLIMATE
-      ...rssFeeds[2].items.slice(0, 2).map((item) => ({
-        issue: "CLIMATE",
-        title: item.title,
-        link: item.link,
-        image: extractImage(item),
-        curated: false,
-        priority: 0,
-      })),
-      ...rssFeeds[3].items.slice(0, 2).map((item) => ({
-        issue: "CLIMATE",
-        title: item.title,
-        link: item.link,
-        image: extractImage(item),
-        curated: false,
-        priority: 0,
-      })),
+      ...rssFeeds[2].items.slice(0, 2).map((item) => {
+        return {
+          issue: "CLIMATE",
+          title: item.title,
+          link: item.link,
+          image: extractImage(item),
+          curated: false,
+          priority: 0,
+          source: "Grist",
+        };
+      }),
+      ...rssFeeds[3].items.slice(0, 2).map((item) => {
+        return {
+          issue: "CLIMATE",
+          title: item.title,
+          link: item.link,
+          image: extractImage(item),
+          curated: false,
+          priority: 0,
+          source: "Inside Climate News",
+        };
+      }),
     ];
 
     // Ensure we always return an array, even if empty
     const safeItems = Array.isArray(items) ? items : [];
-
+    console.log(safeItems);
     return NextResponse.json(safeItems);
   } catch (error) {
     console.error("Error fetching hybrid feeds:", error);

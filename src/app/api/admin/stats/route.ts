@@ -14,7 +14,11 @@ export async function GET() {
     const totalClicks = clicksData?.length || 0;
 
     // Count unique users
-    const uniqueAnonIds = new Set(clicksData?.map((c) => c.anon_id) || []);
+    const uniqueAnonIds = new Set(
+      clicksData?.map((c) => {
+        return c.anon_id;
+      }) || []
+    );
     const uniqueUsers = uniqueAnonIds.size;
 
     // Issue statistics
@@ -24,10 +28,12 @@ export async function GET() {
         return acc;
       }, {} as Record<string, number>) || {};
 
-    const issueStats = Object.entries(issueCounts).map(([issue, count]) => ({
-      issue,
-      count: count as number,
-    }));
+    const issueStats = Object.entries(issueCounts).map(([issue, count]) => {
+      return {
+        issue,
+        count: count as number,
+      };
+    });
 
     // Daily statistics (last 7 days)
     const sevenDaysAgo = new Date();
@@ -43,11 +49,15 @@ export async function GET() {
       }, {} as Record<string, number>) || {};
 
     const dailyStats = Object.entries(dailyCounts)
-      .map(([date, clicks]) => ({
-        date,
-        clicks: clicks as number,
-      }))
-      .sort((a, b) => a.date.localeCompare(b.date));
+      .map(([date, clicks]) => {
+        return {
+          date,
+          clicks: clicks as number,
+        };
+      })
+      .sort((a, b) => {
+        return a.date.localeCompare(b.date);
+      });
 
     return NextResponse.json({
       clicks: clicksData || [],

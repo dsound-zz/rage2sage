@@ -20,6 +20,14 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    rules: {
+      // Require explicit return statements in arrow functions
+      "array-callback-return": "error",
+      // Enforce consistent arrow function style with explicit returns
+      "arrow-body-style": ["error", "always"],
+    },
+  },
 ];
 
 export default eslintConfig;

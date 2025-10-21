@@ -16,14 +16,17 @@ export async function GET() {
     }
 
     // Convert curated articles to feed format
-    const items = (curatedArticles || []).map((article) => ({
-      issue: article.issue,
-      title: article.title,
-      link: article.link,
-      image: article.image_url,
-      curated: true,
-      priority: article.priority,
-    }));
+    const items = (curatedArticles || []).map((article) => {
+      return {
+        issue: article.issue,
+        title: article.title,
+        link: article.link,
+        image: article.image_url,
+        curated: true,
+        priority: article.priority,
+        source: article.source,
+      };
+    });
 
     return NextResponse.json(items);
   } catch (error) {

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "title": "ICE reportedly shifting away from immigration raids on farms and hotels",
+    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=450&fit=crop",
+    "source": "The Guardian",
+    "issue": "ICE_RAIDS",
+    "url": "https://www.theguardian.com/us-news/2024/01/15/ice-immigration-raids-farms-hotels"
+  },
+  {
+    "id": "2",
+    "title": "Climate change accelerates faster than predicted, new study warns",
+    "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=800&h=450&fit=crop",
+    "source": "Reuters",
+    "issue": "CLIMATE_CRISIS",
+    "url": "https://www.reuters.com/business/environment/climate-change-accelerates-faster-predicted-new-study-warns-2024-01-15/"
+  },
+  {
+    "id": "3",
+    "title": "Supreme Court to hear case that could reshape immigration enforcement",
+    "image": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&h=450&fit=crop",
+    "source": "NPR",
+    "issue": "ICE_RAIDS",
+    "url": "https://www.npr.org/2024/01/15/supreme-court-immigration-enforcement-case"
+  },
+  {
+    "id": "4",
+    "title": "Record-breaking temperatures recorded across multiple continents",
+    "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=450&fit=crop",
+    "source": "BBC News",
+    "issue": "CLIMATE_CRISIS",
+    "url": "https://www.bbc.com/news/science-environment-67986158"
+  },
+  {
+    "id": "5",
+    "title": "Community groups mobilize to support families affected by recent ICE operations",
+    "image": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=450&fit=crop",
+    "source": "Los Angeles Times",
+    "issue": "ICE_RAIDS",
+    "url": "https://www.latimes.com/california/story/2024-01-15/community-groups-ice-operations-families"
+  }
+]

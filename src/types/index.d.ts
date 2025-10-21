@@ -6,5 +6,6 @@ export interface ActionLink {
 export interface Issue {
   id: string;
   label: string;
+  description?: string;
   actions: ActionLink[];
 }

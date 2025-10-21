@@ -1,23 +1,53 @@
 "use client";
 
-import { useState } from "react";
-import issues from "@/data/issue.json";
+import { useState, useEffect } from "react";
 import type { Issue } from "@/types";
 import IssueModal from "@/components/IssueModal";
-import HomeFeed from "@/components/HomeFeed";
+import Header from "@/components/Header";
+import IssueButtons from "@/components/IssueButtons";
+import FeedCard from "@/components/FeedCard";
+
+interface FeedItem {
+  issue: string;
+  title: string;
+  link: string;
+  image: string;
+  curated?: boolean;
+  priority?: number;
+  source?: string;
+}
 
 export default function Home() {
   const [zip, setZip] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
-  const [anonId] = useState(() => crypto.randomUUID());
+  const [feedData, setFeedData] = useState<FeedItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [anonId] = useState(() => {
+    return crypto.randomUUID();
+  });
+
+  useEffect(() => {
+    const fetchFeedData = async () => {
+      try {
+        const response = await fetch("/api/curated-feed");
+        const data = await response.json();
+        setFeedData(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Error fetching curated feed:", error);
+        setFeedData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeedData();
+  }, []);
 
   const openModal = (issue: Issue) => {
     setSelectedIssue(issue);
     setIsOpen(true);
   };
-
-  const typedIssues = issues as Issue[];
 
   const trackClick = async (action_id: string, issue: string) => {
     await fetch("/api/track-click", {
@@ -29,51 +59,89 @@ export default function Home() {
 
   return (
     <>
-      <main className="max-w-3xl mx-auto p-6 space-y-8">
-        <section className="text-center">
-          <h1 className="text-4xl font-bold">Feel enraged? Do something.</h1>
-          <p className="text-gray-600 mt-2">
-            Turn your outrage into real action. Choose an issue below.
+      <div className="min-h-screen bg-neutral-50 text-neutral-900 flex flex-col">
+        <main className="flex-1">
+          <div className="max-w-4xl mx-auto px-6 space-y-16 py-16">
+            {/* Header Section */}
+            <Header />
+
+            {/* ZIP Code Section */}
+            <section className="text-center">
+              <input
+                placeholder="Enter ZIP (optional)"
+                value={zip}
+                onChange={(e) => {
+                  return setZip(e.target.value);
+                }}
+                className="border border-neutral-300 rounded-xl px-4 py-3 text-center w-64 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 bg-white shadow-sm"
+              />
+            </section>
+
+            {/* Issue Selection Section */}
+            <section className="space-y-6">
+              <h2 className="text-2xl font-semibold text-center text-neutral-900">
+                Choose an issue below and make a difference
+              </h2>
+              <div className="border-t border-neutral-200 pt-8">
+                <IssueButtons onOpenModal={openModal} trackClick={trackClick} />
+              </div>
+            </section>
+
+            {/* Latest News Section */}
+            <section className="space-y-8">
+              <div className="border-t border-neutral-200 pt-8">
+                <h2 className="text-2xl font-semibold text-center text-neutral-900 mb-8">
+                  Latest News
+                </h2>
+                <div className="space-y-8">
+                  {loading ? (
+                    <div className="text-center py-8">
+                      <p className="text-neutral-500">Loading latest news...</p>
+                    </div>
+                  ) : feedData.length > 0 ? (
+                    feedData.map((item) => {
+                      return (
+                        <FeedCard
+                          key={item.title}
+                          item={item}
+                          onOpenModal={openModal}
+                          trackClick={trackClick}
+                        />
+                      );
+                    })
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-neutral-500">
+                        No news available at the moment.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </section>
+          </div>
+        </main>
+
+        {/* Footer */}
+        <footer className="text-center py-12 border-t border-neutral-200 bg-white">
+          <p className="text-neutral-500">
+            Powered by outrage, fueled by hope.
           </p>
-          <input
-            placeholder="Enter ZIP (optional)"
-            value={zip}
-            onChange={(e) => setZip(e.target.value)}
-            className="mt-4 border rounded p-2 text-center w-32"
-          />
-        </section>
+        </footer>
+      </div>
 
-        <section className="grid grid-cols-2 gap-4">
-          {typedIssues.map((issue) => (
-            <button
-              key={issue.id}
-              onClick={() => {
-                trackClick("view_issue", issue.id);
-                setSelectedIssue(issue);
-                setIsOpen(true);
-              }}
-              className="border rounded-lg p-6 text-lg font-semibold hover:bg-gray-100 hover:cursor-pointer"
-            >
-              {issue.label}
-            </button>
-          ))}
-        </section>
-
-        {isOpen && selectedIssue && (
-          <IssueModal
-            isOpen={isOpen}
-            onClose={() => setIsOpen(false)}
-            issue={selectedIssue}
-            zip={zip}
-            anonId={anonId}
-          />
-        )}
-
-        <HomeFeed anonId={anonId} onOpenModal={openModal} />
-      </main>
-      <footer className="text-xs text-center text-gray-400 mt-8">
-        v{process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? "local"}
-      </footer>
+      {/* Issue Modal */}
+      {isOpen && selectedIssue && (
+        <IssueModal
+          isOpen={isOpen}
+          onClose={() => {
+            return setIsOpen(false);
+          }}
+          issue={selectedIssue}
+          zip={zip}
+          anonId={anonId}
+        />
+      )}
     </>
   );
 }

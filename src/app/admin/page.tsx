@@ -54,6 +54,7 @@ interface FeedArticle {
   image: string | null;
   curated?: boolean;
   priority?: number;
+  source?: string;
 }
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7300"];
@@ -118,7 +119,9 @@ export default function AdminPage() {
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex space-x-8">
               <button
-                onClick={() => setActiveTab("analytics")}
+                onClick={() => {
+                  return setActiveTab("analytics");
+                }}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === "analytics"
                     ? "border-blue-500 text-blue-600"
@@ -128,7 +131,9 @@ export default function AdminPage() {
                 Analytics
               </button>
               <button
-                onClick={() => setActiveTab("curation")}
+                onClick={() => {
+                  return setActiveTab("curation");
+                }}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === "curation"
                     ? "border-blue-500 text-blue-600"
@@ -269,19 +274,23 @@ export default function AdminPage() {
                       cx="50%"
                       cy="50%"
                       labelLine={false}
-                      label={({ issue, percent }) =>
-                        `${issue} ${((percent as number) * 100).toFixed(0)}%`
-                      }
+                      label={({ issue, percent }) => {
+                        return `${issue} ${((percent as number) * 100).toFixed(
+                          0
+                        )}%`;
+                      }}
                       outerRadius={80}
                       fill="#8884d8"
                       dataKey="count"
                     >
-                      {issueStats.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
+                      {issueStats.map((entry, index) => {
+                        return (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        );
+                      })}
                     </Pie>
                     <Tooltip />
                   </PieChart>
@@ -336,22 +345,24 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {clicks.slice(0, 10).map((click) => (
-                      <tr key={click.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {click.issue}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {click.action_id}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {click.zip || "—"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {new Date(click.created_at).toLocaleString()}
-                        </td>
-                      </tr>
-                    ))}
+                    {clicks.slice(0, 10).map((click) => {
+                      return (
+                        <tr key={click.id}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {click.issue}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {click.action_id}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {click.zip || "—"}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {new Date(click.created_at).toLocaleString()}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -418,7 +429,7 @@ function NewsCurationTab() {
           image_url: article.image,
           issue: article.issue,
           priority: 0,
-          source: "automated",
+          source: article.source || "Manual",
         }),
       });
       fetchCuratedArticles();
@@ -503,9 +514,12 @@ function NewsCurationTab() {
               <input
                 type="text"
                 value={newArticle.title}
-                onChange={(e) =>
-                  setNewArticle({ ...newArticle, title: e.target.value })
-                }
+                onChange={(e) => {
+                  return setNewArticle({
+                    ...newArticle,
+                    title: e.target.value,
+                  });
+                }}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter article title"
               />
@@ -517,9 +531,9 @@ function NewsCurationTab() {
               <input
                 type="url"
                 value={newArticle.link}
-                onChange={(e) =>
-                  setNewArticle({ ...newArticle, link: e.target.value })
-                }
+                onChange={(e) => {
+                  return setNewArticle({ ...newArticle, link: e.target.value });
+                }}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="https://example.com/article"
               />
@@ -531,9 +545,12 @@ function NewsCurationTab() {
               <input
                 type="url"
                 value={newArticle.image_url}
-                onChange={(e) =>
-                  setNewArticle({ ...newArticle, image_url: e.target.value })
-                }
+                onChange={(e) => {
+                  return setNewArticle({
+                    ...newArticle,
+                    image_url: e.target.value,
+                  });
+                }}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="https://example.com/image.jpg"
               />
@@ -544,12 +561,12 @@ function NewsCurationTab() {
               </label>
               <select
                 value={newArticle.issue}
-                onChange={(e) =>
-                  setNewArticle({
+                onChange={(e) => {
+                  return setNewArticle({
                     ...newArticle,
                     issue: e.target.value as "ICE_RAIDS" | "CLIMATE",
-                  })
-                }
+                  });
+                }}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="ICE_RAIDS">ICE Raids / Immigration</option>
@@ -562,12 +579,12 @@ function NewsCurationTab() {
               </label>
               <select
                 value={newArticle.priority}
-                onChange={(e) =>
-                  setNewArticle({
+                onChange={(e) => {
+                  return setNewArticle({
                     ...newArticle,
                     priority: parseInt(e.target.value),
-                  })
-                }
+                  });
+                }}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value={0}>Regular</option>
@@ -603,36 +620,40 @@ function NewsCurationTab() {
             </p>
           ) : (
             <div className="space-y-4">
-              {curatedArticles.map((article) => (
-                <div
-                  key={article.id}
-                  className="flex items-center justify-between p-4 border rounded-lg bg-yellow-50 border-yellow-200"
-                >
-                  <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">
-                      {article.title}
-                    </h4>
-                    <p className="text-sm text-gray-600">{article.issue}</p>
-                    <div className="flex items-center mt-1 space-x-2">
-                      {article.priority === 1 && (
-                        <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                          FEATURED
-                        </span>
-                      )}
-                      <span className="text-xs text-gray-500">
-                        Added{" "}
-                        {new Date(article.created_at).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => removeFromCurated(article.id)}
-                    className="ml-4 px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+              {curatedArticles.map((article) => {
+                return (
+                  <div
+                    key={article.id}
+                    className="flex items-center justify-between p-4 border rounded-lg bg-yellow-50 border-yellow-200"
                   >
-                    Remove
-                  </button>
-                </div>
-              ))}
+                    <div className="flex-1">
+                      <h4 className="font-medium text-gray-900">
+                        {article.title}
+                      </h4>
+                      <p className="text-sm text-gray-600">{article.issue}</p>
+                      <div className="flex items-center mt-1 space-x-2">
+                        {article.priority === 1 && (
+                          <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
+                            FEATURED
+                          </span>
+                        )}
+                        <span className="text-xs text-gray-500">
+                          Added{" "}
+                          {new Date(article.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        return removeFromCurated(article.id);
+                      }}
+                      className="ml-4 px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -651,9 +672,9 @@ function NewsCurationTab() {
         <div className="p-6">
           <div className="space-y-4">
             {availableArticles.map((article, index) => {
-              const isCurated = curatedArticles.some(
-                (ca) => ca.link === article.link
-              );
+              const isCurated = curatedArticles.some((ca) => {
+                return ca.link === article.link;
+              });
               return (
                 <div
                   key={`${article.link}-${index}`}
@@ -673,7 +694,9 @@ function NewsCurationTab() {
                     <p className="text-sm text-gray-600">{article.issue}</p>
                   </div>
                   <button
-                    onClick={() => addToCurated(article)}
+                    onClick={() => {
+                      return addToCurated(article);
+                    }}
                     disabled={isCurated}
                     className={`ml-4 px-3 py-1 text-sm rounded ${
                       isCurated

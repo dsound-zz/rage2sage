@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import issues from "@/data/issue.json";
 import type { Issue } from "@/types";
-import Image from "next/image";
 
 interface FeedItem {
   issue: string;
@@ -12,6 +12,7 @@ interface FeedItem {
   image: string;
   curated?: boolean;
   priority?: number;
+  source?: string;
 }
 
 interface HomeFeedProps {
@@ -33,7 +34,9 @@ export default function HomeFeed({ anonId, onOpenModal }: HomeFeedProps) {
 
   useEffect(() => {
     fetch("/api/curated-feed")
-      .then((res) => res.json())
+      .then((res) => {
+        return res.json();
+      })
       .then((data) => {
         console.log("Curated feed data received:", data);
         // Ensure data is an array to prevent map errors
@@ -49,7 +52,7 @@ export default function HomeFeed({ anonId, onOpenModal }: HomeFeedProps) {
 
   if (loading) {
     return (
-      <section className="mt-8">
+      <section>
         <h2 className="text-2xl font-bold mb-4">Latest News</h2>
         <div className="text-center py-8">Loading news...</div>
       </section>
@@ -57,60 +60,69 @@ export default function HomeFeed({ anonId, onOpenModal }: HomeFeedProps) {
   }
 
   return (
-    <section className="mt-8">
-      <h2 className="text-2xl font-bold mb-4">Latest News</h2>
-      <div className="space-y-4">
-        {items.map((item) => (
-          <article
-            key={item.link}
-            className={`border rounded p-4 mb-5 ${
-              item.curated
-                ? "border-yellow-400 bg-yellow-50 shadow-lg"
-                : "border-gray-200"
-            }`}
-          >
-            {item.curated && (
-              <div className="flex items-center mb-2">
-                <span className="bg-yellow-400 text-yellow-900 text-xs font-semibold px-2 py-1 rounded">
-                  ✨ CURATED
-                </span>
-                {item.priority === 1 && (
-                  <span className="ml-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                    FEATURED
-                  </span>
-                )}
-              </div>
-            )}
-            {item.image && (
-              <Image
-                src={item.image}
-                width={500}
-                height={500}
-                alt={`Image of ${item.title}`}
-                onError={(e) => {
-                  console.log("Image failed to load:", item.image);
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            )}
-            <h3 className="font-semibold text-lg">{item.title}</h3>
-            <p className="text-sm text-gray-600 mt-2">
-              <a href={item.link} target="_blank" className="underline">
-                Read story
-              </a>
-            </p>
-            <button
-              onClick={() => {
-                trackClick("feed_action", item.issue);
-                const issue = issues.find((issue) => issue.id === item.issue);
-                if (issue) onOpenModal(issue);
-              }}
-              className="mt-3 bg-blue-600 text-white px-3 py-1  hover:bg-gray-100 hover:cursor-pointer rounded"
+    <section>
+      <h2 className="text-3xl font-bold mb-8 text-gray-900 text-center">
+        Latest News
+      </h2>
+      <div className="space-y-6">
+        {items.map((item) => {
+          return (
+            <article
+              key={item.title}
+              className={`card-hover ${
+                item.curated ? "ring-2 ring-yellow-300 bg-yellow-50" : ""
+              }`}
             >
-              Take Action on {item.issue}
-            </button>
-          </article>
-        ))}
+              {" "}
+              <a href={item.link} target="_blank" className="block group">
+                <h3 className="font-semibold text-lg text-gray-900 group-hover:text-blue-600 transition-colors">
+                  {item.title}
+                </h3>
+              </a>
+              <div className="flex flex-col md:flex-row gap-4">
+                {item.image && (
+                  <div className="md:w-48 flex-shrink-0">
+                    <Image
+                      src={item.image}
+                      width={200}
+                      height={150}
+                      alt={`Image of ${item.title}`}
+                      className="rounded-lg object-cover w-full h-32 md:h-full"
+                      onError={(e) => {
+                        console.log("Image failed to load:", item.image);
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  </div>
+                )}
+                <div className="flex-1 space-y-3">
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                      {item.source || "Unknown"}
+                    </span>
+                    {item.curated && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        ✨ Curated
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => {
+                      trackClick("feed_action", item.issue);
+                      const issue = issues.find((issue) => {
+                        return issue.id === item.issue;
+                      });
+                      if (issue) onOpenModal(issue);
+                    }}
+                    className="btn-action text-sm"
+                  >
+                    Take Action on {item.issue}
+                  </button>
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </section>
   );
