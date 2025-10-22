@@ -106,18 +106,20 @@ export default function HomeFeed({ anonId, onOpenModal }: HomeFeedProps) {
                       </span>
                     )}
                   </div>
-                  <button
-                    onClick={() => {
-                      trackClick("feed_action", item.issue);
-                      const issue = issues.find((issue) => {
-                        return issue.id === item.issue;
-                      });
-                      if (issue) onOpenModal(issue);
-                    }}
-                    className="btn-action text-sm"
-                  >
-                    Take Action on {item.issue}
-                  </button>
+                  <div className="flex-shrink-0">
+                    <button
+                      onClick={() => {
+                        trackClick("feed_action", item.issue);
+                        const issue = issues.find((issue) => {
+                          return issue.id === item.issue;
+                        });
+                        if (issue) onOpenModal(issue);
+                      }}
+                      className="btn-action-fixed"
+                    >
+                      Take Action on {item.issue}
+                    </button>
+                  </div>
                 </div>
               </div>
             </article>

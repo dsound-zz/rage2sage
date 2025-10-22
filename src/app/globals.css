@@ -71,6 +71,21 @@ body {
   @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700 shadow-sm hover:shadow-md;
 }
 
+.btn-action-fixed {
+  @apply inline-flex items-center justify-center 
+    px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
+    bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700 shadow-sm 
+    hover:shadow-md w-[200px] whitespace-nowrap;
+  width: 200px !important;
+  height: 40px !important;
+  min-width: 200px !important;
+  max-width: 200px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  white-space: nowrap !important;
+}
+
 .btn-secondary {
   @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 bg-gray-100 text-gray-900 hover:bg-gray-200 active:bg-gray-300 border border-gray-300;
 }
