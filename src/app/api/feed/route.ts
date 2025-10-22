@@ -81,7 +81,7 @@ export async function GET() {
 
     // Fetch RSS feeds
     const rssFeeds = await Promise.all([
-      // ICE_RAIDS RSS
+      // ICE RAIDS RSS
       parser.parseURL("https://www.commondreams.org/rss.xml"),
       parser.parseURL("https://www.democracynow.org/democracynow.rss"),
 
@@ -101,11 +101,11 @@ export async function GET() {
     );
     // Combine Guardian API and RSS articles
     const items = [
-      // Guardian API articles for ICE_RAIDS
+      // Guardian API articles for ICE RAIDS
       ...guardianImmigrationData.response.results.map(
         (article: GuardianArticle) => {
           return {
-            issue: "ICE_RAIDS",
+            issue: "ICE RAIDS",
             title: article.webTitle,
             link: article.webUrl,
             image: article.fields?.thumbnail || null,
@@ -116,10 +116,10 @@ export async function GET() {
         }
       ),
 
-      // RSS articles for ICE_RAIDS
+      // RSS articles for ICE RAIDS
       ...rssFeeds[0].items.slice(0, 2).map((item) => {
         return {
-          issue: "ICE_RAIDS",
+          issue: "ICE RAIDS",
           title: item.title,
           link: item.link,
           image: extractImage(item),
@@ -130,7 +130,7 @@ export async function GET() {
       }),
       ...rssFeeds[1].items.slice(0, 2).map((item) => {
         return {
-          issue: "ICE_RAIDS",
+          issue: "ICE RAIDS",
           title: item.title,
           link: item.link,
           image: extractImage(item),

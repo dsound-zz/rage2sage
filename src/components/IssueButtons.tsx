@@ -9,7 +9,7 @@ interface IssueButtonsProps {
 
 const issues = [
   {
-    id: "ICE_RAIDS",
+    id: "ICE RAIDS",
     label: "ICE Raids",
     gradient: "from-red-500 to-orange-500",
     description: "Stand up for immigrant families",
@@ -57,7 +57,7 @@ export default function IssueButtons({
   return (
     <div className="flex flex-col md:flex-row gap-6">
       {issues.map((issue) => {
-        const isIceRaids = issue.id === "ICE_RAIDS";
+        const isIceRaids = issue.id === "ICE RAIDS";
         return (
           <button
             key={issue.id}

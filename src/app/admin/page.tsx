@@ -385,7 +385,7 @@ function NewsCurationTab() {
     title: "",
     link: "",
     image_url: "",
-    issue: "ICE_RAIDS" as "ICE_RAIDS" | "CLIMATE",
+    issue: "ICE RAIDS" as "ICE RAIDS" | "CLIMATE",
     priority: 0,
   });
 
@@ -463,7 +463,7 @@ function NewsCurationTab() {
         title: "",
         link: "",
         image_url: "",
-        issue: "ICE_RAIDS",
+        issue: "ICE RAIDS",
         priority: 0,
       });
 
@@ -564,12 +564,12 @@ function NewsCurationTab() {
                 onChange={(e) => {
                   return setNewArticle({
                     ...newArticle,
-                    issue: e.target.value as "ICE_RAIDS" | "CLIMATE",
+                    issue: e.target.value as "ICE RAIDS" | "CLIMATE",
                   });
                 }}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="ICE_RAIDS">ICE Raids / Immigration</option>
+                <option value="ICE RAIDS">ICE Raids / Immigration</option>
                 <option value="CLIMATE">Climate Crisis</option>
               </select>
             </div>

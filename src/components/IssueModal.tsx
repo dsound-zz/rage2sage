@@ -1,5 +1,10 @@
 import { Issue } from "@/types";
-import { Dialog, Transition, TransitionChild } from "@headlessui/react";
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
 import { Fragment } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
@@ -44,12 +49,38 @@ export default function IssueModal({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(0,0,0,0.5)",
+            }}
+          />
         </TransitionChild>
 
         {/* Modal wrapper */}
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            overflow: "auto",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              minHeight: "100vh",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "1rem",
+            }}
+          >
             <TransitionChild
               as={Fragment}
               enter="ease-out duration-200"
@@ -59,25 +90,53 @@ export default function IssueModal({
               leaveFrom="opacity-100 translate-y-0 scale-100"
               leaveTo="opacity-0 translate-y-2 scale-95"
             >
-              <Dialog.Panel className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl transition-all">
+              <DialogPanel
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  maxWidth: "500px",
+                  backgroundColor: "white",
+                  padding: "1.5rem",
+                  border: "1px solid #ccc",
+                }}
+              >
                 {/* Close button */}
                 <button
                   onClick={onClose}
-                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+                  style={{
+                    position: "absolute",
+                    top: "1rem",
+                    right: "1rem",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
                 >
-                  <XMarkIcon className="h-5 w-5" />
+                  <XMarkIcon style={{ width: "20px", height: "20px" }} />
                 </button>
 
                 {/* Modal content */}
-                <div className="text-left space-y-4">
-                  <Dialog.Title className="text-xl font-semibold text-gray-900">
+                <div>
+                  <h2
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      marginBottom: "1rem",
+                    }}
+                  >
                     {issue.label}
-                  </Dialog.Title>
-                  <p className="text-sm text-gray-600">
+                  </h2>
+                  <p
+                    style={{
+                      fontSize: "0.9rem",
+                      marginBottom: "1rem",
+                      color: "#666",
+                    }}
+                  >
                     Choose an action to make a difference:
                   </p>
 
-                  <div className="space-y-3">
+                  <div>
                     {issue.actions.map((action) => {
                       return (
                         <a
@@ -88,7 +147,14 @@ export default function IssueModal({
                           onClick={() => {
                             return trackClick(action.label, issue.id);
                           }}
-                          className="block w-full rounded-md bg-blue-600 px-4 py-3 text-white text-center text-sm font-medium hover:bg-blue-700 transition-colors"
+                          className="btn btn-primary"
+                          style={{
+                            display: "block",
+                            width: "100%",
+                            marginBottom: "0.5rem",
+                            textAlign: "center",
+                            textDecoration: "none",
+                          }}
                         >
                           {action.label}
                         </a>
@@ -98,12 +164,13 @@ export default function IssueModal({
 
                   <button
                     onClick={onClose}
-                    className="mt-4 w-full rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 transition-colors"
+                    className="btn btn-secondary"
+                    style={{ width: "100%", marginTop: "1rem" }}
                   >
                     Close
                   </button>
                 </div>
-              </Dialog.Panel>
+              </DialogPanel>
             </TransitionChild>
           </div>
         </div>

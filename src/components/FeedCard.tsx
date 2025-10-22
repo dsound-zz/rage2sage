@@ -19,7 +19,7 @@ interface FeedCardProps {
 }
 
 const issueConfig = {
-  ICE_RAIDS: {
+  ICE RAIDS: {
     gradient: "from-red-500 to-orange-500",
     label: "ICE Raids",
     actions: [
@@ -110,7 +110,7 @@ export default function FeedCard({
           <button
             onClick={handleTakeAction}
             className={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg border shadow-sm hover:shadow-md transition-all duration-200 ${
-              item.issue === "ICE_RAIDS"
+              item.issue === "ICE RAIDS"
                 ? "text-red-800 bg-gradient-to-br from-red-100 to-orange-100 border-red-200 hover:from-red-200 hover:to-orange-200"
                 : "text-sky-800 bg-gradient-to-br from-sky-100 to-green-100 border-sky-200 hover:from-sky-200 hover:to-green-200"
             }`}

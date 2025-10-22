@@ -4,7 +4,7 @@ CREATE TABLE curated_articles (
   title TEXT NOT NULL,
   link TEXT NOT NULL,
   image_url TEXT,
-  issue TEXT NOT NULL CHECK (issue IN ('ICE_RAIDS', 'CLIMATE')),
+  issue TEXT NOT NULL CHECK (issue IN ('ICE RAIDS', 'CLIMATE')),
   priority INTEGER DEFAULT 0 CHECK (priority IN (0, 1)), -- 0=regular, 1=featured
   source TEXT, -- 'guardian', 'rss', 'manual'
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
