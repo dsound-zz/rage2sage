@@ -24,13 +24,27 @@ export default function HomeFeed({ anonId, onOpenModal }: HomeFeedProps) {
   const [loading, setLoading] = useState(true);
 
   const issueColors = {
-    ICE_RAIDS: "primary",
+    "ICE RAIDS": "primary",
     CLIMATE: "secondary",
   };
 
-  // Convert issue ID to display name
+  // Map feed issue names to issue data IDs
+  const getIssueId = (feedIssue: string) => {
+    // Normalize spaces and underscores
+    if (feedIssue === "CLIMATE_CRISIS") return "CLIMATE_CRISIS";
+    if (feedIssue === "ICE_RAIDS" || feedIssue === "ICE RAIDS")
+      return "ICE RAIDS";
+    return feedIssue;
+  };
+
+  // Convert issue ID to display name (remove underscores)
   const getDisplayName = (issueId: string) => {
-    return issueId.replace(/_/g, " ");
+    return issueId
+      .replace(/_/g, " ")
+      .toLowerCase()
+      .replace(/(^|\s)\S/g, (letter) => {
+        return letter.toUpperCase();
+      });
   };
 
   const trackClick = async (action_id: string, issue: string) => {
@@ -148,9 +162,18 @@ export default function HomeFeed({ anonId, onOpenModal }: HomeFeedProps) {
                 <button
                   onClick={() => {
                     trackClick("feed_action", item.issue);
+                    const issueId = getIssueId(item.issue);
+                    console.log("Looking for issue with ID:", issueId);
+                    console.log(
+                      "Available issues:",
+                      issues.map((i) => {
+                        return i.id;
+                      })
+                    );
                     const issue = issues.find((issue) => {
-                      return issue.id === item.issue;
+                      return issue.id === issueId;
                     });
+                    console.log("Found issue:", issue);
                     if (issue) onOpenModal(issue);
                   }}
                   className={`btn btn-small ${

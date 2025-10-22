@@ -7,13 +7,18 @@ interface HeaderProps {
 
 export default function Header({ onOpenModal }: HeaderProps) {
   const issueColors = {
-    ICE_RAIDS: "primary",
+    "ICE RAIDS": "primary",
     CLIMATE: "secondary",
   };
 
-  // Convert issue ID to display name
+  // Convert issue ID to display name (remove underscores)
   const getDisplayName = (issueId: string) => {
-    return issueId.replace(/_/g, " ");
+    return issueId
+      .replace(/_/g, " ")
+      .toLowerCase()
+      .replace(/(^|\s)\S/g, (letter) => {
+        return letter.toUpperCase();
+      });
   };
 
   return (
