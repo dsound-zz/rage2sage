@@ -174,6 +174,44 @@ export default function HomeFeed({
                   {item.title}
                 </h3>
               </a>
+
+              {item.image && item.image !== "null" && (
+                <div style={{ marginBottom: "1.5rem" }}>
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "block",
+                      textDecoration: "none",
+                    }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      style={{
+                        width: "100%",
+                        height: "220px",
+                        objectFit: "cover",
+                        borderRadius: "0.75rem",
+                        cursor: "pointer",
+                        transition: "opacity 0.2s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.opacity = "0.9";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.opacity = "1";
+                      }}
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  </a>
+                </div>
+              )}
+
               <div
                 style={{
                   display: "flex",
