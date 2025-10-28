@@ -215,16 +215,17 @@ export default function HomeFeed({
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  flexDirection: "column",
                   gap: "1rem",
                 }}
               >
                 <div
                   style={{
                     display: "flex",
-                    flexDirection: "column",
-                    gap: "0.25rem",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: "0.5rem",
                   }}
                 >
                   <div
@@ -240,7 +241,7 @@ export default function HomeFeed({
                     (item.location.city || item.location.state) && (
                       <div
                         style={{
-                          fontSize: "0.813rem",
+                          fontSize: "0.75rem",
                           color: "var(--neutral-700)",
                           fontWeight: "600",
                           display: "flex",
@@ -345,7 +346,7 @@ export default function HomeFeed({
                       : "btn-primary"
                   }`}
                   style={{
-                    flexShrink: 0,
+                    width: "100%",
                   }}
                 >
                   Take Action on {getDisplayName(item.issue)}
