@@ -11,7 +11,7 @@ export interface Issue {
 }
 
 export interface Location {
-  city?: string;
-  state?: string;
-  zip?: string;
+  city?: string | null;
+  state?: string | null;
+  zip?: string | null;
 }
