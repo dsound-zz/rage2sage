@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import issues from "@/data/issue.json";
-import type { Issue } from "@/types";
+import type { Issue, Location } from "@/types";
 
 interface FeedItem {
   issue: string;
   title: string;
   link: string;
   image: string;
+  location?: Location | null;
   curated?: boolean;
   priority?: number;
   source?: string;
@@ -16,10 +17,15 @@ interface FeedItem {
 
 interface HomeFeedProps {
   anonId: string;
+  selectedIssue: string | null;
   onOpenModal: (issue: Issue) => void;
 }
 
-export default function HomeFeed({ anonId, onOpenModal }: HomeFeedProps) {
+export default function HomeFeed({
+  anonId,
+  selectedIssue,
+  onOpenModal,
+}: HomeFeedProps) {
   const [items, setItems] = useState<FeedItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,22 +62,38 @@ export default function HomeFeed({ anonId, onOpenModal }: HomeFeedProps) {
   };
 
   useEffect(() => {
-    fetch("/api/curated-feed")
+    fetch("/api/feed")
       .then((res) => {
         return res.json();
       })
       .then((data) => {
-        console.log("Curated feed data received:", data);
+        console.log("Feed data received:", data);
         // Ensure data is an array to prevent map errors
         const safeData = Array.isArray(data) ? data : [];
+
+        // Debug: log each item's issue and location
+        safeData.forEach((item) => {
+          console.log(
+            `UI Item: "${item.title}" - Issue: ${item.issue} - Location:`,
+            item.location
+          );
+        });
+
         setItems(safeData);
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching curated feed:", error);
+        console.error("Error fetching feed:", error);
         setLoading(false);
       });
   }, []);
+
+  // Filter items based on selected issue
+  const filteredItems = selectedIssue
+    ? items.filter((item) => {
+        return item.issue === selectedIssue;
+      })
+    : items;
 
   if (loading) {
     return (
@@ -104,7 +126,18 @@ export default function HomeFeed({ anonId, onOpenModal }: HomeFeedProps) {
           margin: "0 auto",
         }}
       >
-        {items.map((item) => {
+        {filteredItems.length === 0 && !loading ? (
+          <div
+            style={{
+              textAlign: "center",
+              padding: "3rem",
+              color: "var(--neutral-500)",
+            }}
+          >
+            No articles found for this filter.
+          </div>
+        ) : null}
+        {filteredItems.map((item) => {
           return (
             <article
               key={item.title}
@@ -151,30 +184,121 @@ export default function HomeFeed({ anonId, onOpenModal }: HomeFeedProps) {
               >
                 <div
                   style={{
-                    fontSize: "0.875rem",
-                    color: "var(--neutral-500)",
-                    fontStyle: "italic",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.25rem",
                   }}
                 >
-                  {item.source || "Unknown"}
+                  <div
+                    style={{
+                      fontSize: "0.875rem",
+                      color: "var(--neutral-500)",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {item.source || "Unknown"}
+                  </div>
+                  {item.location &&
+                    (item.location.city || item.location.state) && (
+                      <div
+                        style={{
+                          fontSize: "0.813rem",
+                          color: "var(--neutral-700)",
+                          fontWeight: "600",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.25rem",
+                        }}
+                      >
+                        <a
+                          href={`https://www.google.com/maps/search/${encodeURIComponent(
+                            [item.location.city, item.location.state]
+                              .filter(Boolean)
+                              .join(", ")
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                          style={{
+                            display: "inline-block",
+                            transition: "transform 0.2s ease",
+                            cursor: "pointer",
+                            textDecoration: "none",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "scale(1.2)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "scale(1)";
+                          }}
+                        >
+                          <span style={{ fontSize: "0.875rem" }}>📍</span>
+                        </a>
+                        <span>
+                          {[item.location.city, item.location.state]
+                            .filter(Boolean)
+                            .join(", ")}
+                        </span>
+                      </div>
+                    )}
                 </div>
 
                 <button
-                  onClick={() => {
+                  onClick={async () => {
                     trackClick("feed_action", item.issue);
                     const issueId = getIssueId(item.issue);
-                    console.log("Looking for issue with ID:", issueId);
-                    console.log(
-                      "Available issues:",
-                      issues.map((i) => {
-                        return i.id;
-                      })
-                    );
-                    const issue = issues.find((issue) => {
+
+                    // Find base issue first
+                    const baseIssue = issues.find((issue) => {
                       return issue.id === issueId;
                     });
-                    console.log("Found issue:", issue);
-                    if (issue) onOpenModal(issue);
+
+                    if (!baseIssue) return;
+
+                    // Open modal immediately with empty actions (to show loading)
+                    const loadingIssue: Issue = {
+                      id: baseIssue.id,
+                      label: baseIssue.label,
+                      actions: [],
+                    };
+                    onOpenModal(loadingIssue);
+
+                    try {
+                      // Fetch location-specific actions
+                      const actionsResponse = await fetch(
+                        "/api/get-location-actions",
+                        {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            issue: issueId,
+                            location: item.location,
+                          }),
+                        }
+                      );
+
+                      const actionsData = await actionsResponse.json();
+
+                      // Combine local and national actions
+                      const allActions = [
+                        ...(actionsData.localActions || []),
+                        ...(actionsData.nationalActions || []),
+                      ];
+
+                      // Update with actual actions
+                      const updatedIssue: Issue = {
+                        id: baseIssue.id,
+                        label: baseIssue.label,
+                        actions: allActions,
+                      };
+                      onOpenModal(updatedIssue);
+                    } catch (error) {
+                      console.error("Error fetching location actions:", error);
+                      // On error, use base issue actions
+                      onOpenModal(baseIssue);
+                    }
                   }}
                   className={`btn btn-small ${
                     issueColors[item.issue as keyof typeof issueColors] ===

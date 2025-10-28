@@ -98,34 +98,42 @@ export default function AdminPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading admin dashboard...</p>
+          <p className="mt-4 text-neutral-600">Loading admin dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600 mt-2">
+          <h1
+            className="text-4xl font-bold mb-2"
+            style={{
+              fontFamily: "Playfair Display, serif",
+              color: "var(--neutral-900)",
+            }}
+          >
+            Admin Dashboard
+          </h1>
+          <p className="text-neutral-600 mt-2 text-lg">
             Manage your news feed and analytics
           </p>
         </div>
 
         {/* Tab Navigation */}
         <div className="mb-8">
-          <div className="border-b border-gray-200">
+          <div className="border-b border-neutral-200">
             <nav className="-mb-px flex space-x-8">
               <button
                 onClick={() => {
                   return setActiveTab("analytics");
                 }}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`py-3 px-4 border-b-2 font-semibold transition-all ${
                   activeTab === "analytics"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    ? "border-primary-600 text-primary-600"
+                    : "border-transparent text-neutral-500 hover:text-neutral-700 hover:border-neutral-300"
                 }`}
               >
                 Analytics
@@ -134,10 +142,10 @@ export default function AdminPage() {
                 onClick={() => {
                   return setActiveTab("curation");
                 }}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`py-3 px-4 border-b-2 font-semibold transition-all ${
                   activeTab === "curation"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    ? "border-primary-600 text-primary-600"
+                    : "border-transparent text-neutral-500 hover:text-neutral-700 hover:border-neutral-300"
                 }`}
               >
                 News Curation
@@ -151,11 +159,11 @@ export default function AdminPage() {
           <>
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white rounded-lg shadow p-6">
+              <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200 hover:shadow-md transition-all duration-200">
                 <div className="flex items-center">
-                  <div className="p-2 bg-blue-100 rounded-lg">
+                  <div className="p-3 bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl">
                     <svg
-                      className="w-6 h-6 text-blue-600"
+                      className="w-7 h-7 text-blue-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -175,21 +183,21 @@ export default function AdminPage() {
                     </svg>
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">
+                    <p className="text-sm font-medium text-neutral-500 uppercase tracking-wide">
                       Total Clicks
                     </p>
-                    <p className="text-2xl font-semibold text-gray-900">
+                    <p className="text-3xl font-bold text-neutral-900 mt-1">
                       {totalClicks}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow p-6">
+              <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200 hover:shadow-md transition-all duration-200">
                 <div className="flex items-center">
-                  <div className="p-2 bg-green-100 rounded-lg">
+                  <div className="p-3 bg-gradient-to-br from-green-100 to-green-50 rounded-xl">
                     <svg
-                      className="w-6 h-6 text-green-600"
+                      className="w-7 h-7 text-green-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -203,21 +211,21 @@ export default function AdminPage() {
                     </svg>
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">
+                    <p className="text-sm font-medium text-neutral-500 uppercase tracking-wide">
                       Unique Users
                     </p>
-                    <p className="text-2xl font-semibold text-gray-900">
+                    <p className="text-3xl font-bold text-neutral-900 mt-1">
                       {uniqueUsers}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow p-6">
+              <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200 hover:shadow-md transition-all duration-200">
                 <div className="flex items-center">
-                  <div className="p-2 bg-purple-100 rounded-lg">
+                  <div className="p-3 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl">
                     <svg
-                      className="w-6 h-6 text-purple-600"
+                      className="w-7 h-7 text-purple-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -231,10 +239,10 @@ export default function AdminPage() {
                     </svg>
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">
+                    <p className="text-sm font-medium text-neutral-500 uppercase tracking-wide">
                       Avg Clicks/User
                     </p>
-                    <p className="text-2xl font-semibold text-gray-900">
+                    <p className="text-3xl font-bold text-neutral-900 mt-1">
                       {uniqueUsers > 0
                         ? (totalClicks / uniqueUsers).toFixed(1)
                         : 0}
@@ -247,8 +255,8 @@ export default function AdminPage() {
             {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               {/* Issue Distribution Bar Chart */}
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+                <h3 className="text-lg font-semibold text-neutral-900 mb-4">
                   Clicks by Issue
                 </h3>
                 <ResponsiveContainer width="100%" height={300}>
@@ -263,8 +271,8 @@ export default function AdminPage() {
               </div>
 
               {/* Issue Distribution Pie Chart */}
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+                <h3 className="text-lg font-semibold text-neutral-900 mb-4">
                   Issue Distribution
                 </h3>
                 <ResponsiveContainer width="100%" height={300}>
@@ -299,8 +307,8 @@ export default function AdminPage() {
             </div>
 
             {/* Daily Activity Line Chart */}
-            <div className="bg-white rounded-lg shadow p-6 mb-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white rounded-xl shadow-sm p-6 mb-8 border border-neutral-200">
+              <h3 className="text-lg font-semibold text-neutral-900 mb-4">
                 Daily Activity (Last 7 Days)
               </h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -320,44 +328,44 @@ export default function AdminPage() {
             </div>
 
             {/* Recent Clicks Table */}
-            <div className="bg-white rounded-lg shadow">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">
+            <div className="bg-white rounded-xl shadow-sm border border-neutral-200">
+              <div className="px-6 py-4 border-b border-neutral-200">
+                <h3 className="text-lg font-semibold text-neutral-900">
                   Recent Clicks
                 </h3>
               </div>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-neutral-200">
+                  <thead className="bg-neutral-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                         Issue
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                         Action
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                         ZIP
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
                         Time
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white divide-y divide-neutral-200">
                     {clicks.slice(0, 10).map((click) => {
                       return (
                         <tr key={click.id}>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-neutral-900">
                             {click.issue}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500 hover:bg-neutral-50 transition-colors">
                             {click.action_id}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500 hover:bg-neutral-50 transition-colors">
                             {click.zip || "—"}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500 hover:bg-neutral-50 transition-colors">
                             {new Date(click.created_at).toLocaleString()}
                           </td>
                         </tr>
@@ -488,7 +496,7 @@ function NewsCurationTab() {
     return (
       <div className="text-center py-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-        <p className="mt-2 text-gray-600">Loading articles...</p>
+        <p className="mt-2 text-neutral-600">Loading articles...</p>
       </div>
     );
   }
@@ -496,19 +504,19 @@ function NewsCurationTab() {
   return (
     <div className="space-y-6">
       {/* Add New Article Form */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">
+      <div className="bg-white rounded-xl shadow-sm border border-neutral-200">
+        <div className="px-6 py-4 border-b border-neutral-200">
+          <h3 className="text-lg font-semibold text-neutral-900">
             Add New Article
           </h3>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-neutral-600">
             Manually add articles to your curated feed
           </p>
         </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-neutral-700 mb-2">
                 Article Title *
               </label>
               <input
@@ -520,12 +528,12 @@ function NewsCurationTab() {
                     title: e.target.value,
                   });
                 }}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter article title"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-neutral-700 mb-2">
                 Article URL *
               </label>
               <input
@@ -534,12 +542,12 @@ function NewsCurationTab() {
                 onChange={(e) => {
                   return setNewArticle({ ...newArticle, link: e.target.value });
                 }}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="https://example.com/article"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-neutral-700 mb-2">
                 Image URL (optional)
               </label>
               <input
@@ -551,12 +559,12 @@ function NewsCurationTab() {
                     image_url: e.target.value,
                   });
                 }}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="https://example.com/image.jpg"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-neutral-700 mb-2">
                 Issue Category *
               </label>
               <select
@@ -567,14 +575,14 @@ function NewsCurationTab() {
                     issue: e.target.value as "ICE RAIDS" | "CLIMATE",
                   });
                 }}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="ICE RAIDS">ICE Raids / Immigration</option>
                 <option value="CLIMATE">Climate Crisis</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-neutral-700 mb-2">
                 Priority
               </label>
               <select
@@ -585,7 +593,7 @@ function NewsCurationTab() {
                     priority: parseInt(e.target.value),
                   });
                 }}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value={0}>Regular</option>
                 <option value={1}>Featured</option>
@@ -604,18 +612,18 @@ function NewsCurationTab() {
       </div>
 
       {/* Curated Articles */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">
+      <div className="bg-white rounded-xl shadow-sm border border-neutral-200">
+        <div className="px-6 py-4 border-b border-neutral-200">
+          <h3 className="text-lg font-semibold text-neutral-900">
             Curated Articles ({curatedArticles.length})
           </h3>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-neutral-600">
             Hand-picked articles that appear in your feed
           </p>
         </div>
         <div className="p-6">
           {curatedArticles.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">
+            <p className="text-neutral-500 text-center py-4">
               No curated articles yet. Add some using the form above.
             </p>
           ) : (
@@ -627,17 +635,19 @@ function NewsCurationTab() {
                     className="flex items-center justify-between p-4 border rounded-lg bg-yellow-50 border-yellow-200"
                   >
                     <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">
+                      <h4 className="font-medium text-neutral-900">
                         {article.title}
                       </h4>
-                      <p className="text-sm text-gray-600">{article.issue}</p>
+                      <p className="text-sm text-neutral-600">
+                        {article.issue}
+                      </p>
                       <div className="flex items-center mt-1 space-x-2">
                         {article.priority === 1 && (
                           <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
                             FEATURED
                           </span>
                         )}
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-neutral-500">
                           Added{" "}
                           {new Date(article.created_at).toLocaleDateString()}
                         </span>
@@ -660,12 +670,12 @@ function NewsCurationTab() {
       </div>
 
       {/* Available Articles */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">
+      <div className="bg-white rounded-xl shadow-sm border border-neutral-200">
+        <div className="px-6 py-4 border-b border-neutral-200">
+          <h3 className="text-lg font-semibold text-neutral-900">
             Available Articles ({availableArticles.length})
           </h3>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-neutral-600">
             Articles from Guardian API and RSS feeds - click to curate
           </p>
         </div>
@@ -682,7 +692,7 @@ function NewsCurationTab() {
                 >
                   <div className="flex-1">
                     <div className="flex items-center mb-2">
-                      <h4 className="font-medium text-gray-900">
+                      <h4 className="font-medium text-neutral-900">
                         {article.title}
                       </h4>
                       {article.curated && (
@@ -691,7 +701,7 @@ function NewsCurationTab() {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-gray-600">{article.issue}</p>
+                    <p className="text-sm text-neutral-600">{article.issue}</p>
                   </div>
                   <button
                     onClick={() => {
@@ -700,7 +710,7 @@ function NewsCurationTab() {
                     disabled={isCurated}
                     className={`ml-4 px-3 py-1 text-sm rounded ${
                       isCurated
-                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        ? "bg-gray-300 text-neutral-500 cursor-not-allowed"
                         : "bg-blue-600 text-white hover:bg-blue-700"
                     }`}
                   >

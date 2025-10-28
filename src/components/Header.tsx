@@ -2,10 +2,12 @@ import issues from "@/data/issue.json";
 import type { Issue } from "@/types";
 
 interface HeaderProps {
-  onOpenModal: (issue: Issue) => void;
+  selectedIssue: string | null;
+  onSelectIssue: (issueId: string | null) => void;
+  onOpenModal?: (issue: Issue) => void;
 }
 
-export default function Header({ onOpenModal }: HeaderProps) {
+export default function Header({ selectedIssue, onSelectIssue }: HeaderProps) {
   const issueColors = {
     "ICE RAIDS": "primary",
     CLIMATE: "secondary",
@@ -67,17 +69,25 @@ export default function Header({ onOpenModal }: HeaderProps) {
           {issues.map((issue) => {
             const colorClass =
               issueColors[issue.id as keyof typeof issueColors];
+            const isActive = selectedIssue === issue.id;
             return (
               <button
                 key={issue.id}
                 onClick={() => {
-                  return onOpenModal(issue);
+                  if (isActive) {
+                    onSelectIssue(null);
+                  } else {
+                    onSelectIssue(issue.id);
+                  }
                 }}
                 className={`btn btn-large ${
                   colorClass === "secondary" ? "btn-secondary" : "btn-primary"
                 }`}
                 style={{
                   minWidth: "200px",
+                  opacity: isActive ? 1 : 0.7,
+                  transform: isActive ? "scale(1.05)" : "scale(1)",
+                  transition: "all 0.2s ease",
                 }}
               >
                 {getDisplayName(issue.id)}

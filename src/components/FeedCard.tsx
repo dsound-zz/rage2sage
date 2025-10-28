@@ -19,7 +19,7 @@ interface FeedCardProps {
 }
 
 const issueConfig = {
-  ICE RAIDS: {
+  "ICE RAIDS": {
     gradient: "from-red-500 to-orange-500",
     label: "ICE Raids",
     actions: [

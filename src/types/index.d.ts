@@ -9,3 +9,9 @@ export interface Issue {
   description?: string;
   actions: ActionLink[];
 }
+
+export interface Location {
+  city?: string;
+  state?: string;
+  zip?: string;
+}

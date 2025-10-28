@@ -14,6 +14,7 @@ interface IssueModalProps {
   issue: Issue;
   zip: string;
   anonId: string;
+  isLoading?: boolean;
 }
 
 export default function IssueModal({
@@ -22,6 +23,7 @@ export default function IssueModal({
   issue,
   zip,
   anonId,
+  isLoading = false,
 }: IssueModalProps) {
   const trackClick = async (actionLabel: string, issueId: string) => {
     const action_id = actionLabel
@@ -136,31 +138,58 @@ export default function IssueModal({
                     Choose an action to make a difference:
                   </p>
 
-                  <div>
-                    {issue.actions.map((action) => {
-                      return (
-                        <a
-                          key={action.url}
-                          href={action.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={() => {
-                            return trackClick(action.label, issue.id);
-                          }}
-                          className="btn btn-primary"
-                          style={{
-                            display: "block",
-                            width: "100%",
-                            marginBottom: "0.5rem",
-                            textAlign: "center",
-                            textDecoration: "none",
-                          }}
-                        >
-                          {action.label}
-                        </a>
-                      );
-                    })}
-                  </div>
+                  {isLoading ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "2rem 0",
+                        minHeight: "200px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "48px",
+                          height: "48px",
+                          border: "4px solid #f3f4f6",
+                          borderTop: "4px solid #3b82f6",
+                          borderRadius: "50%",
+                          animation: "spin 1s linear infinite",
+                        }}
+                      />
+                      <p style={{ marginTop: "1rem", color: "#6b7280" }}>
+                        Finding local actions...
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      {issue.actions.map((action) => {
+                        return (
+                          <a
+                            key={action.url}
+                            href={action.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={() => {
+                              return trackClick(action.label, issue.id);
+                            }}
+                            className="btn btn-primary"
+                            style={{
+                              display: "block",
+                              width: "100%",
+                              marginBottom: "0.5rem",
+                              textAlign: "center",
+                              textDecoration: "none",
+                            }}
+                          >
+                            {action.label}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
 
                   <button
                     onClick={onClose}
