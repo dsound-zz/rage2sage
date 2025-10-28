@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy initialize OpenAI to avoid build errors when API key is missing
+const getOpenAI = () => {
+  if (!process.env.OPENAI_API_KEY) return null;
+  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+};
 
 export async function POST(req: Request) {
   try {
@@ -35,6 +37,14 @@ Respond with a JSON object in this format:
 
 If no specific location is found, return {"city": null, "state": null, "zip": null}.
 Only include the JSON, no other text.`;
+
+    const openai = getOpenAI();
+    if (!openai) {
+      // Fallback to keyword extraction
+      return NextResponse.json({
+        location: extractLocationByKeywords(title, content),
+      });
+    }
 
     const response = await openai.chat.completions.create({
       model: "gpt-4",
